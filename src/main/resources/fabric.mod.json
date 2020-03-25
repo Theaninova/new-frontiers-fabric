@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "new_frontiers",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "New Frontiers",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
-    "Me!"
+    "Hytech"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
@@ -14,16 +14,16 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/new_frontiers/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleModKt::init"
+      "de.wulkanat.new_frontiers.ModEntryClientKt::init"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "new_frontiers.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.7.1",
