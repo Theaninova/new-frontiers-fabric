@@ -7,13 +7,10 @@ import de.wulkanat.new_frontiers.MOD_ID
 import de.wulkanat.new_frontiers.extensions.server.getWorldsRaw
 import de.wulkanat.new_frontiers.extensions.server.world.getWorldGenerationProgressListener
 import de.wulkanat.new_frontiers.extensions.server.world.getWorldSaveHandler
-import de.wulkanat.new_frontiers.mixin.world.NFMinecraftServer
-import de.wulkanat.new_frontiers.mixin.world.NFServerWorld
 import de.wulkanat.new_frontiers.world.dimension.DimensionBertiBotts
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensionType
 import net.minecraft.block.pattern.BlockPattern
 import net.minecraft.entity.Entity
-import net.minecraft.server.MinecraftServer
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.world.SecondaryServerWorld
@@ -39,35 +36,24 @@ object CommandCreateDimension {
 
                         DimensionType.byId(Identifier(MOD_ID, id)) ?: run {
                             context.source.sendFeedback(LiteralText("Creating Dimension '$id'"), true)
-                            val dimensionType = FabricDimensionType.builder()
-                                .defaultPlacer { oldEntity: Entity, destinationWorld: ServerWorld, _: Direction?, _: Double, _: Double ->
-                                    BlockPattern.TeleportTarget(
-                                        Vec3d(
-                                            destinationWorld.getTopPosition(
-                                                Heightmap.Type.WORLD_SURFACE,
-                                                BlockPos.ORIGIN
-                                            )
-                                        ),
-                                        oldEntity.velocity,
-                                        oldEntity.yaw.toInt()
-                                    )
-                                }
-                                .factory { world, type -> DimensionBertiBotts(world, type) }
-                                .skyLight(false)
-                                .buildAndRegister(Identifier(MOD_ID, id))
+
+                            val type2 = DimensionBertiBotts.register(id)
+                            type2.create(context.source.world)
 
                             val server = context.source.entity?.server
                             val worlds = server!!.getWorldsRaw()
                             val nether = worlds[DimensionType.THE_NETHER]
-                            worlds.put(dimensionType, SecondaryServerWorld(
-                                worlds[DimensionType.OVERWORLD],
-                                server,
-                                server.workerExecutor,
-                                worlds[DimensionType.THE_NETHER].getWorldSaveHandler(),
-                                dimensionType,
-                                server.profiler,
-                                (nether!!.chunkManager as ServerChunkManager).threadedAnvilChunkStorage.getWorldGenerationProgressListener()
-                            ))
+                            worlds.put(
+                                type2, SecondaryServerWorld(
+                                    worlds[DimensionType.OVERWORLD],
+                                    server,
+                                    server.workerExecutor,
+                                    worlds[DimensionType.THE_NETHER].getWorldSaveHandler(),
+                                    type2,
+                                    server.profiler,
+                                    (nether!!.chunkManager as ServerChunkManager).threadedAnvilChunkStorage.getWorldGenerationProgressListener()
+                                )
+                            )
 
                             return@executes 1
                         }

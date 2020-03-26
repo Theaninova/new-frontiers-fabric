@@ -28,6 +28,7 @@ class DimensionBertiBotts(world: World, type: DimensionType) : Dimension(world, 
     private val dayLength = 50
     private val fogColor = Vec3d(0.54, 0.44, 0.16)
     private val perlin = PerlinNoiseSampler(Random(1030495))
+    lateinit var dimType: DimensionType
 
     class Cloud(
         private val heightRage: IntRange,
@@ -87,7 +88,7 @@ class DimensionBertiBotts(world: World, type: DimensionType) : Dimension(world, 
     }
 
     override fun getType(): DimensionType {
-        return BERTI_BOTTS_DIMENSION
+        return dimType
     }
 
     override fun hasVisibleSky(): Boolean {
@@ -103,10 +104,9 @@ class DimensionBertiBotts(world: World, type: DimensionType) : Dimension(world, 
     }
 
     companion object {
-        lateinit var BERTI_BOTTS_DIMENSION: FabricDimensionType
-
-        fun register() {
-            BERTI_BOTTS_DIMENSION = FabricDimensionType.builder()
+        fun register(name: String = "berti_botts"): FabricDimensionType {
+            lateinit var type2: FabricDimensionType
+            type2 = FabricDimensionType.builder()
                 .defaultPlacer { oldEntity: Entity, destinationWorld: ServerWorld, _: Direction?, _: Double, _: Double ->
                     TeleportTarget(
                         Vec3d(
@@ -119,9 +119,15 @@ class DimensionBertiBotts(world: World, type: DimensionType) : Dimension(world, 
                         oldEntity.yaw.toInt()
                     )
                 }
-                .factory { world, type -> DimensionBertiBotts(world, type) }
+                .factory { world, type ->
+                    val dim = DimensionBertiBotts(world, type)
+                    dim.dimType = type2
+                    dim
+                }
                 .skyLight(false)
-                .buildAndRegister(Identifier(MOD_ID, "berti_botts"))
+                .buildAndRegister(Identifier(MOD_ID, name))
+
+            return type2
         }
     }
 }
