@@ -21,5 +21,4 @@ fun init() {
     CommandRegistry.INSTANCE.register(false) {
         CommandTPRaw.register(it)
     }
-    DimensionBertiBotts.register()
 }
