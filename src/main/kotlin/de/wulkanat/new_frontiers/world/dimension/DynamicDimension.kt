@@ -17,6 +17,7 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.Heightmap
 import net.minecraft.world.World
+import net.minecraft.world.WorldSaveHandler
 import net.minecraft.world.dimension.Dimension
 import net.minecraft.world.dimension.DimensionType
 
@@ -28,7 +29,10 @@ abstract class DynamicDimension(world: World, dimension: DimensionType, f: Float
     }
 
     companion object {
-        private fun <T : DynamicDimension> register(name: String, dimension: (world: World, type: DimensionType) -> T): FabricDimensionType {
+        private fun <T : DynamicDimension> register(
+            name: String,
+            dimension: (world: World, type: DimensionType) -> T
+        ): FabricDimensionType {
             lateinit var type2: FabricDimensionType
             type2 = FabricDimensionType.builder()
                 .defaultPlacer { oldEntity: Entity, destinationWorld: ServerWorld, _: Direction?, _: Double, _: Double ->
@@ -54,7 +58,28 @@ abstract class DynamicDimension(world: World, dimension: DimensionType, f: Float
             return type2
         }
 
-        fun <T : DynamicDimension> createDimension(id: String, server: MinecraftServer, dimension: (world: World, type: DimensionType) -> T): Boolean {
+        /**
+         * Loads all Dimensions in the saves folder
+         */
+        fun loadAll(world: ServerWorld) {
+            val saveHandler: WorldSaveHandler = world.getWorldSaveHandler()
+            val dir = saveHandler.worldDir
+            dir.listFiles { _, name -> name.startsWith("DIM_$MOD_ID") }?.forEach {
+                println("Adding dimension ${it.name}")
+                createDimension(it.name.removePrefix("DIM_${MOD_ID}_"), world.server) { world, type ->
+                    DimensionBertiBotts(world, type)
+                }
+            }
+        }
+
+        /**
+         * Creates a dimension to a ready-to-use state
+         */
+        fun <T : DynamicDimension> createDimension(
+            id: String,
+            server: MinecraftServer,
+            dimension: (world: World, type: DimensionType) -> T
+        ): Boolean {
             DimensionType.byId(Identifier(MOD_ID, id)) ?: run {
                 println("Creating dimension '$id'")
 
