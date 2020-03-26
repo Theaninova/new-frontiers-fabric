@@ -1,12 +1,15 @@
 {
   "required": true,
-  "package": "net.fabricmc.example.mixin",
+  "package": "de.wulkanat.new_frontiers.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-  ],
-  "server": [
+    "NFIntegratedMinecraftServer"
   ],
   "client": [
+
+  ],
+  "server": [
+
   ],
   "injectors": {
     "defaultRequire": 1
