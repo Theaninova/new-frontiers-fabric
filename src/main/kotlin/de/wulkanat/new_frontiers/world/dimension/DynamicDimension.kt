@@ -67,7 +67,7 @@ abstract class DynamicDimension(world: World, dimension: DimensionType, f: Float
             dir.listFiles { _, name -> name.startsWith("DIM_$MOD_ID") }?.forEach {
                 println("Adding dimension ${it.name}")
                 createDimension(it.name.removePrefix("DIM_${MOD_ID}_"), world.server) { world, type ->
-                    DimensionBertiBotts(world, type)
+                    DimensionBertiBotts(world, type, 1000)
                 }
             }
         }

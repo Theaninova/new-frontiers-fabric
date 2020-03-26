@@ -4,7 +4,6 @@ import de.wulkanat.new_frontiers.command.CommandCreateDimension
 import de.wulkanat.new_frontiers.command.CommandPrintDim
 import de.wulkanat.new_frontiers.command.CommandTPDim
 import de.wulkanat.new_frontiers.command.CommandTPRaw
-import de.wulkanat.new_frontiers.world.dimension.DimensionBertiBotts
 import net.fabricmc.fabric.api.registry.CommandRegistry
 
 @Suppress("unused")
