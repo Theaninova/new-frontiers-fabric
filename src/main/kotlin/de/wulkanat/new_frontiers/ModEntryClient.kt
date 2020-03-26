@@ -1,11 +1,11 @@
 package de.wulkanat.new_frontiers
 
-import de.wulkanat.new_frontiers.command.CommandRecursiveCreate
+import de.wulkanat.new_frontiers.command.CommandCreateDimension
+import de.wulkanat.new_frontiers.command.CommandPrintDim
 import de.wulkanat.new_frontiers.command.CommandTPDim
+import de.wulkanat.new_frontiers.command.CommandTPRaw
 import de.wulkanat.new_frontiers.world.dimension.DimensionBertiBotts
 import net.fabricmc.fabric.api.registry.CommandRegistry
-
-const val MOD_ID = "new_frontiers"
 
 @Suppress("unused")
 fun init() {
@@ -13,7 +13,13 @@ fun init() {
         CommandTPDim.register(it)
     }
     CommandRegistry.INSTANCE.register(false) {
-        CommandRecursiveCreate.register(it)
+        CommandCreateDimension.register(it)
+    }
+    CommandRegistry.INSTANCE.register(false) {
+        CommandPrintDim.register(it)
+    }
+    CommandRegistry.INSTANCE.register(false) {
+        CommandTPRaw.register(it)
     }
     DimensionBertiBotts.register()
 }

@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.*
+import net.minecraft.util.math.noise.PerlinNoiseSampler
 import net.minecraft.world.Heightmap
 import net.minecraft.world.World
 import net.minecraft.world.biome.Biomes
@@ -19,14 +20,41 @@ import net.minecraft.world.dimension.DimensionType
 import net.minecraft.world.gen.chunk.ChunkGenerator
 import net.minecraft.world.gen.chunk.ChunkGeneratorType
 import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig
+import java.util.*
+import kotlin.math.PI
+import kotlin.math.sin
 
 class DimensionBertiBotts(world: World, type: DimensionType) : Dimension(world, type, 0.5F) {
-    private val dayLength = 24000
+    private val dayLength = 50
     private val fogColor = Vec3d(0.54, 0.44, 0.16)
+    private val perlin = PerlinNoiseSampler(Random(1030495))
+
+    class Cloud(
+        private val heightRage: IntRange,
+        private val cloudTickSpeed: Float,
+        initialHeight: Int = heightRage.first
+    ) {
+        private var cloudOperationReverse = false
+        var height = initialHeight.toFloat()
+            private set
+
+        fun tick() {
+            if (height > heightRage.last) cloudOperationReverse = true
+            else if (height < heightRage.first) cloudOperationReverse = false
+
+            if (cloudOperationReverse)
+                height += cloudTickSpeed
+            else
+                height -= cloudTickSpeed
+        }
+    }
+
+    private val clouds = Cloud(50..100, 5.0F)
+
 
     @Environment(EnvType.CLIENT)
     override fun isFogThick(x: Int, z: Int): Boolean {
-        return false
+        return perlin.sample(x.toDouble(), z.toDouble(), 1.0, 1.0, 1.0) > 0.5
     }
 
     override fun getSpawningBlockInChunk(chunkPos: ChunkPos?, checkMobSpawnValidity: Boolean): BlockPos? {
@@ -34,7 +62,7 @@ class DimensionBertiBotts(world: World, type: DimensionType) : Dimension(world, 
     }
 
     override fun getSkyAngle(timeOfDay: Long, tickDelta: Float): Float {
-        val daysPassed = (timeOfDay.toDouble() + tickDelta) / dayLength
+        val daysPassed = sin((timeOfDay.toDouble() + tickDelta) / dayLength / PI / 2)
         return MathHelper.fractionalPart(daysPassed - 0.25).toFloat()
     }
 
@@ -47,6 +75,15 @@ class DimensionBertiBotts(world: World, type: DimensionType) : Dimension(world, 
 
     override fun getTopSpawningBlockPosition(x: Int, z: Int, checkMobSpawnValidity: Boolean): BlockPos? {
         return null
+    }
+
+    override fun update() {
+        super.update()
+        clouds.tick()
+    }
+
+    override fun getCloudHeight(): Float {
+        return clouds.height
     }
 
     override fun getType(): DimensionType {
