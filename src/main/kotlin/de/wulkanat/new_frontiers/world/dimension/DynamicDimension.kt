@@ -65,9 +65,13 @@ abstract class DynamicDimension(world: World, dimension: DimensionType, f: Float
             val saveHandler: WorldSaveHandler = world.getWorldSaveHandler()
             val dir = saveHandler.worldDir
             dir.listFiles { _, name -> name.startsWith("DIM_$MOD_ID") }?.forEach {
+                val seed = it.name.split("__(?=[0-9]+$)".toRegex(), limit = 2).getOrElse(1) { _ ->
+                    println("Error while loading dimension ${it.name}")
+                    return@forEach
+                }
                 println("Adding dimension ${it.name}")
                 createDimension(it.name.removePrefix("DIM_${MOD_ID}_"), world.server) { world, type ->
-                    DimensionBertiBotts(world, type, 1000)
+                    DimensionBertiBotts(world, type, seed.toLong())
                 }
             }
         }

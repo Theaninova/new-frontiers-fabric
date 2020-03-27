@@ -1,7 +1,10 @@
 package de.wulkanat.new_frontiers.world.dimension
 
+import com.google.gson.JsonObject
 import de.wulkanat.new_frontiers.MOD_ID
+import de.wulkanat.new_frontiers.procedural.*
 import de.wulkanat.new_frontiers.world.biome.procedural.BiomeProceduralPlains
+import de.wulkanat.new_frontiers.world.dimension.model.IProcSerializable
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.util.Identifier
@@ -13,14 +16,27 @@ import net.minecraft.world.biome.source.FixedBiomeSourceConfig
 import net.minecraft.world.dimension.DimensionType
 import net.minecraft.world.gen.chunk.*
 import kotlin.random.Random
+import kotlin.random.nextInt
 
-class DimensionBertiBotts(world: World, type: DimensionType, val seed: Long) : DynamicDimension(world, type, 0.5F) {
-    private val dayLength = 50
-    private val fogColor = Vec3d(0.54, 0.44, 0.16)
+class DimensionBertiBotts(world: World, type: DimensionType, val seed: Long) : DynamicDimension(world, type, 0.5F)/*, IProcSerializable<DimensionBertiBotts>*/ {
+    private val random = Random(seed)
+    private val dayLength: Int
+    private val fogColor: Vec3d
+    private val fogThick: Boolean
+
+    /*override val fromJson: (JsonObject) -> DimensionBertiBotts = {
+        DimensionBertiBotts()
+    }*/
+
+    init {
+        dayLength = random.normalDistributedInt(6_000..50_000, 24_000.0, 3_000.0)
+        fogColor = Vec3d(random.nextDouble(), random.nextDouble(), random.nextDouble())
+        fogThick = random.nextBoolean(0.1)
+    }
 
     @Environment(EnvType.CLIENT)
     override fun isFogThick(x: Int, z: Int): Boolean {
-        return false
+        return fogThick
     }
 
     override fun getSpawningBlockInChunk(chunkPos: ChunkPos?, checkMobSpawnValidity: Boolean): BlockPos? {
@@ -35,7 +51,7 @@ class DimensionBertiBotts(world: World, type: DimensionType, val seed: Long) : D
     override fun createChunkGenerator(): ChunkGenerator<*> {
         val generatorConfig = OverworldChunkGeneratorConfig()
         val biome = Registry.register(Registry.BIOME, Identifier(MOD_ID, "plains__${this.dimType.suffix}"),
-            BiomeProceduralPlains(Random(seed)))
+            BiomeProceduralPlains(random))
 
         val biomeConfig: FixedBiomeSourceConfig =
             BiomeSourceType.FIXED.getConfig(world.levelProperties).setBiome(biome)
