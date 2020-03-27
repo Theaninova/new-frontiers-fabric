@@ -1,10 +1,9 @@
 package de.wulkanat.new_frontiers.world.dimension
 
-import com.google.gson.JsonObject
 import de.wulkanat.new_frontiers.MOD_ID
-import de.wulkanat.new_frontiers.procedural.*
+import de.wulkanat.new_frontiers.extensions.kotlin.random.nextBoolean
+import de.wulkanat.new_frontiers.extensions.kotlin.random.normalDistributedInt
 import de.wulkanat.new_frontiers.world.biome.procedural.BiomeProceduralPlains
-import de.wulkanat.new_frontiers.world.dimension.model.IProcSerializable
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.util.Identifier
@@ -16,7 +15,6 @@ import net.minecraft.world.biome.source.FixedBiomeSourceConfig
 import net.minecraft.world.dimension.DimensionType
 import net.minecraft.world.gen.chunk.*
 import kotlin.random.Random
-import kotlin.random.nextInt
 
 class DimensionBertiBotts(world: World, type: DimensionType, val seed: Long) : DynamicDimension(world, type, 0.5F)/*, IProcSerializable<DimensionBertiBotts>*/ {
     private val random = Random(seed)

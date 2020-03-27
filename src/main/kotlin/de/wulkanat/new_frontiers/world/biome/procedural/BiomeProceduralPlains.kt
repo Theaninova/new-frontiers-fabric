@@ -1,8 +1,8 @@
 package de.wulkanat.new_frontiers.world.biome.procedural
 
-import de.wulkanat.new_frontiers.procedural.nextBoolean
-import de.wulkanat.new_frontiers.procedural.normalDistributedFloat
-import de.wulkanat.new_frontiers.procedural.runRandomly
+import de.wulkanat.new_frontiers.extensions.kotlin.random.nextBoolean
+import de.wulkanat.new_frontiers.extensions.kotlin.random.normalDistributedFloat
+import de.wulkanat.new_frontiers.extensions.kotlin.random.runRandomly
 import net.minecraft.world.biome.Biome
 import net.minecraft.world.biome.DefaultBiomeFeatures
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder
