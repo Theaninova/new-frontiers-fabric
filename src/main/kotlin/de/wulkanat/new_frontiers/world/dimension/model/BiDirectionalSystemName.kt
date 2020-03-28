@@ -10,7 +10,9 @@ class BiDirectionalNameSystem(val diameter: Long, val height: Long) {
         val quadrantFormat = "A-G NN"
 
         val totalNames = getTotalCombinations(systemFormat) * getTotalCombinations(quadrantFormat)
+        println(totalNames)
         val totalPoints = diameter * diameter * height
+        println(totalPoints)
 
         if (totalPoints > totalNames) {
             throw Error("Star System is too big for Naming Scheme to be BiDirectional")
@@ -38,25 +40,26 @@ class BiDirectionalNameSystem(val diameter: Long, val height: Long) {
         val xIndex = ((x.toDouble() / diameter.toDouble()) * 1000.0).roundToInt()
         val yIndex = ((y.toDouble() / diameter.toDouble()) * 1000.0).roundToInt()
         val zAlphabet = alphabet[((z.toDouble() / height.toDouble()) * alphabet.size).roundToInt()]
-        val zGreek = greekAlphabet[((z.toDouble() % height.toDouble()) * greekAlphabet.size).roundToInt()]
+        val zGreek = greekAlphabet[(((z.toDouble() % quadrantHeight) / quadrantHeight) * greekAlphabet.size).roundToInt()]
 
         return "${zAlphabet.toUpperCase()}-${zGreek.capitalize()} $xIndex-$yIndex"
     }
 
     fun decodeQuadrantName(name: String): GalacticPosition {
-        val strings = name.split(",", " ")
+        val strings = name.split("-", " ")
+        println(strings)
 
-        val xIndex = Integer.parseInt(strings[3])
-        val yIndex = Integer.parseInt(strings[2])
+        val xIndex = Integer.parseInt(strings[2])
+        val yIndex = Integer.parseInt(strings[3])
         val zAlphabet = alphabet.indexOf(strings[1].toLowerCase())
         val zGreek = alphabet.indexOf(strings[0].toLowerCase())
 
         val x = (xIndex.toDouble() / 1000.0) * diameter.toDouble()
         val y = (yIndex.toDouble() / 1000.0) * diameter.toDouble()
         val z = (zAlphabet.toDouble() / alphabet.size.toDouble()) * height.toDouble() +
-                (zAlphabet.toDouble() / greekAlphabet.size.toDouble()) * (height.toDouble() / alphabet.size.toDouble())
+                (zGreek.toDouble() / greekAlphabet.size.toDouble()) * (height.toDouble() / alphabet.size.toDouble())
 
-        return GalacticPosition(x.roundToInt(), y.roundToInt(), z.roundToInt())
+        return GalacticPosition((x - diameter.toDouble() / 2).roundToInt(), (y - diameter.toDouble() / 2.0).roundToInt(), (z - height.toDouble() / 2.0).roundToInt())
     }
 
     /*fun systemName(galacticPosition: GalacticPosition): String {
@@ -168,7 +171,7 @@ class BiDirectionalNameSystem(val diameter: Long, val height: Long) {
         )
 
         private fun getTotalCombinations(format: String): Long {
-            var totalNames = 0L
+            var totalNames = 1L
             for (c in format) {
                 when (c) {
                     'A' -> totalNames *= alphabet.size
