@@ -16,8 +16,8 @@ import net.minecraft.util.Identifier
 import net.minecraft.world.dimension.DimensionType
 
 object CommandCreateDimension {
-    private const val ARG_DIMENSION_ID = "dimension_id"
-    private const val ARG_DIMENSION_SEED = "dimension_seed"
+    private const val ARG_DIMENSION_ID = "planet"
+    private const val ARG_DIMENSION_SEED = "instance"
     private const val ARG_TELEPORT = "teleport"
 
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
@@ -26,20 +26,21 @@ object CommandCreateDimension {
                 CommandManager.argument(ARG_DIMENSION_ID, StringArgumentType.string()).then(
                     CommandManager.argument(ARG_DIMENSION_SEED, IntegerArgumentType.integer()).then(
                         CommandManager.argument(ARG_TELEPORT, StringArgumentType.string()).executes { context ->
-                            val id = StringArgumentType.getString(context, ARG_DIMENSION_ID)
-                            val seed = IntegerArgumentType.getInteger(context, ARG_DIMENSION_SEED)
+                            val planet = StringArgumentType.getString(context, ARG_DIMENSION_ID).toLowerCase()
+                            val seed = planet.hashCode()
+                            val instance = IntegerArgumentType.getInteger(context, ARG_DIMENSION_SEED)
                             val teleport = StringArgumentType.getString(context, ARG_TELEPORT)!!.toBoolean()
 
                             if (DynamicDimension.createDimension(
-                                    "${id}__${seed.toLong()}",
+                                    "${planet}__${instance}",
                                     context.source.minecraftServer
                                 )
-                                { world, type -> DimensionBertiBotts(world, type, seed.toLong()) }
+                                { world, type -> DimensionBertiBotts(world, type, seed) }
                             ) {
-                                context.source.sendFeedback(LiteralText("Dimension '$id' was created!"), true)
+                                context.source.sendFeedback(LiteralText("Instance $instance of '${planet.toUpperCase()}' was created!"), true)
                                 if (teleport) context.source.entity?.changePositionDirect(
                                     DimensionType.byId(
-                                        Identifier(MOD_ID, "${id}__${seed.toLong()}")
+                                        Identifier(MOD_ID, "${planet}__${instance}")
                                     )!!
                                 )
                             } else {

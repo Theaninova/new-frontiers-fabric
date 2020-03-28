@@ -16,7 +16,7 @@ import net.minecraft.world.dimension.DimensionType
 import net.minecraft.world.gen.chunk.*
 import kotlin.random.Random
 
-class DimensionBertiBotts(world: World, type: DimensionType, val seed: Long) : DynamicDimension(world, type, 0.5F)/*, IProcSerializable<DimensionBertiBotts>*/ {
+class DimensionBertiBotts(world: World, type: DimensionType, val seed: Int) : DynamicDimension(world, type, 0.5F)/*, IProcSerializable<DimensionBertiBotts>*/ {
     private val random = Random(seed)
     private val dayLength: Int
     private val fogColor: Vec3d
