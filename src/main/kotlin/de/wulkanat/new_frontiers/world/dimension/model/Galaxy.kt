@@ -15,7 +15,7 @@ class Galaxy(seed: Int) {
         for (pos in cubeFrom(position)) {
             val systemSeed = pos.hashCode()
 
-            Random(pos.hashCode()).runRandomly(0.1 * gradient.sample(pos.x_ly.toDouble(), pos.y_ly.toDouble(), pos.z_ly.toDouble())) {
+            Random(pos.hashCode()).runRandomly(0.1 * gradient.sample(pos.x_ly, pos.y_ly, pos.z_ly)) {
                 out.add(System(pos))
             }
         }

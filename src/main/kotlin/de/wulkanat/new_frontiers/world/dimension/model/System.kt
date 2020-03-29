@@ -3,8 +3,8 @@ package de.wulkanat.new_frontiers.world.dimension.model
 import de.wulkanat.new_frontiers.extensions.kotlin.random.normalDistributedInt
 import kotlin.random.Random
 
-class System(seed: Int, val position: GalacticPosition) {
-    private val random: Random = Random(seed)
+class System(val position: GalacticPosition) {
+    private val random: Random = Random(position.hashCode())
     val suns: List<Sun>
 
     init {

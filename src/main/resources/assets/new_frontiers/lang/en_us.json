@@ -1,4 +1,5 @@
 {
   "biome.new_frontiers.space": "Something",
-  "tile.organic_surface.name": "Organic Surface"
+  "tile.organic_surface.name": "Organic Surface",
+  "block.transporter.name": "Transporter"
 }

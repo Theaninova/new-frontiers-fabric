@@ -4,7 +4,8 @@ import kotlin.math.roundToInt
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-class BiDirectionalNameSystem(val diameter: Long, val height: Long) {
+// Double remains precise to 1ly until 9_007_199_254_740_992
+class BiDirectionalNameSystem(val diameter: Double, val height: Double) {
     init {
         val systemFormat = "AA-G Ms"
         val quadrantFormat = "A-G NN"
@@ -13,6 +14,10 @@ class BiDirectionalNameSystem(val diameter: Long, val height: Long) {
         println(totalNames)
         val totalPoints = diameter * diameter * height
         println(totalPoints)
+
+        if (totalPoints > 9_007_199_254_740_992) {
+            throw Error("Too big, Double type can't handle this precise enough (Quadrant Count: $totalPoints, max: 9_007_199_254_740_992")
+        }
 
         if (totalPoints > totalNames) {
             throw Error("Star System is too big for Naming Scheme to be BiDirectional")
@@ -32,15 +37,15 @@ class BiDirectionalNameSystem(val diameter: Long, val height: Long) {
         ).capitalize()} ${random.nextInt(0..999)}-${random.nextInt(0..999)}"
     }
 
-    fun quadrantName(galacticPosition: GalacticPosition): String {
+    fun encodeQuadrantName(galacticPosition: GalacticPosition): String {
         val x = galacticPosition.x_ly + diameter / 2
         val y = galacticPosition.y_ly + diameter / 2
         val z = galacticPosition.z_ly + height / 2
 
-        val xIndex = ((x.toDouble() / diameter.toDouble()) * 1000.0).roundToInt()
-        val yIndex = ((y.toDouble() / diameter.toDouble()) * 1000.0).roundToInt()
-        val zAlphabet = alphabet[((z.toDouble() / height.toDouble()) * alphabet.size).roundToInt()]
-        val zGreek = greekAlphabet[(((z.toDouble() % quadrantHeight) / quadrantHeight) * greekAlphabet.size).roundToInt()]
+        val xIndex = ((x / diameter) * 1000.0).roundToInt()
+        val yIndex = ((y / diameter) * 1000.0).roundToInt()
+        val zAlphabet = alphabet[((z / height) * alphabet.size).roundToInt()]
+        val zGreek = greekAlphabet[(((z % quadrantHeight) / quadrantHeight) * greekAlphabet.size).roundToInt()]
 
         return "${zAlphabet.toUpperCase()}-${zGreek.capitalize()} $xIndex-$yIndex"
     }
@@ -54,15 +59,21 @@ class BiDirectionalNameSystem(val diameter: Long, val height: Long) {
         val zAlphabet = alphabet.indexOf(strings[1].toLowerCase())
         val zGreek = alphabet.indexOf(strings[0].toLowerCase())
 
-        val x = (xIndex.toDouble() / 1000.0) * diameter.toDouble()
-        val y = (yIndex.toDouble() / 1000.0) * diameter.toDouble()
-        val z = (zAlphabet.toDouble() / alphabet.size.toDouble()) * height.toDouble() +
-                (zGreek.toDouble() / greekAlphabet.size.toDouble()) * (height.toDouble() / alphabet.size.toDouble())
+        val x = (xIndex.toDouble() / 1000.0) * diameter
+        val y = (yIndex.toDouble() / 1000.0) * diameter
+        val z = (zAlphabet.toDouble() / alphabet.size.toDouble()) * height +
+                (zGreek.toDouble() / greekAlphabet.size.toDouble()) * (height / alphabet.size.toDouble())
 
-        return GalacticPosition((x - diameter.toDouble() / 2).roundToInt(), (y - diameter.toDouble() / 2.0).roundToInt(), (z - height.toDouble() / 2.0).roundToInt())
+        return GalacticPosition(x - diameter / 2.0, y - diameter / 2.0, z - height / 2.0)
     }
 
-    /*fun systemName(galacticPosition: GalacticPosition): String {
+    /*fun encodeSystemName(galacticPosition: GalacticPosition): String {
+        val x = (galacticPosition.x_ly + diameter / 2) % quadrantWidth
+        val y = (galacticPosition.y_ly + diameter / 2) % quadrantWidth
+        // val z = (galacticPosition.z_ly + )
+    }
+
+    fun decodeSystemName(name: String): GalacticPosition {
 
     }*/
 
