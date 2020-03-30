@@ -6,17 +6,18 @@ import de.wulkanat.new_frontiers.world.dimension.model.noise.RadialGradient
 import kotlin.random.Random
 
 class Galaxy(seed: Int) {
-    private val gradient = RadialGradient(Int.MAX_VALUE, Interpolator.sinusial())
+    private val gradient = RadialGradient(50_000.0, Interpolator.linear())
     // val simplex = SimplexNoiseSampler(Random(seed.toLong()))
 
     fun getNearSystems(position: GalacticPosition): List<System> {
         val out: ArrayList<System> = ArrayList()
 
         for (pos in cubeFrom(position)) {
-            val systemSeed = pos.hashCode()
+            val rand = Random(pos.hashCode())
+            val pos2 = GalacticPosition(pos.x_ly + rand.nextDouble(), pos.y_ly + rand.nextDouble(), pos.z_ly + rand.nextDouble())
 
-            Random(pos.hashCode()).runRandomly(0.1 * gradient.sample(pos.x_ly, pos.y_ly, pos.z_ly)) {
-                out.add(System(pos))
+            rand.runRandomly(0.1 * gradient.sample(pos.x_ly, pos.y_ly, pos.z_ly)) {
+                out.add(System(pos2))
             }
         }
 
