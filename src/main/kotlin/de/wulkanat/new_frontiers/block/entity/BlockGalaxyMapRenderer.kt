@@ -34,7 +34,30 @@ class BlockGalaxyMapRenderer(dispatcher: BlockEntityRenderDispatcher) :
         light: Int,
         overlay: Int
     ) {
+        renderSystems(blockEntity, tickDelta, matrices, vertexConsumers, light, overlay)
 
+        matrices!!.push()
+
+        matrices.translate(0.5, 1.25, 0.5)
+        matrices.scale(0.05F, 0.05F, 0.05F)
+
+        val lightAbove = WorldRenderer.getLightmapCoordinates(blockEntity?.world, blockEntity?.pos?.up())
+        MinecraftClient.getInstance().textRenderer.draw(
+            "${position.x_ly}, ${position.y_ly}, ${position.z_ly}",
+            1.0F, -0.5F, 0, false, matrices.peek().model, vertexConsumers, false, 9999999, lightAbove
+        )
+
+        matrices.pop()
+    }
+
+    fun renderSystems(
+        blockEntity: BlockGalaxyMapEntity?,
+        tickDelta: Float,
+        matrices: MatrixStack?,
+        vertexConsumers: VertexConsumerProvider?,
+        light: Int,
+        overlay: Int
+    ) {
         for (system in map) {
             matrices!!.push()
 
@@ -54,19 +77,17 @@ class BlockGalaxyMapRenderer(dispatcher: BlockEntityRenderDispatcher) :
 
             matrices.pop()
         }
+    }
 
-        matrices!!.push()
+    fun renderGalaxyDensity(
+        blockEntity: BlockGalaxyMapEntity?,
+        tickDelta: Float,
+        matrices: MatrixStack?,
+        vertexConsumers: VertexConsumerProvider?,
+        light: Int,
+        overlay: Int
+    ) {
 
-        matrices.translate(0.5, 1.25, 0.5)
-        matrices.scale(0.05F, 0.05F, 0.05F)
-
-        val lightAbove = WorldRenderer.getLightmapCoordinates(blockEntity?.world, blockEntity?.pos?.up())
-        MinecraftClient.getInstance().textRenderer.draw(
-            "${position.x_ly}, ${position.y_ly}, ${position.z_ly}",
-            1.0F, -0.5F, 0, false, matrices.peek().model, vertexConsumers, false, 9999999, lightAbove
-        )
-
-        matrices.pop()
     }
 
     companion object {

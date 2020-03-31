@@ -16,12 +16,16 @@ class Galaxy(seed: Int) {
             val rand = Random(pos.hashCode())
             val pos2 = GalacticPosition(pos.x_ly + rand.nextDouble(), pos.y_ly + rand.nextDouble(), pos.z_ly + rand.nextDouble())
 
-            rand.runRandomly(0.1 * gradient.sample(pos.x_ly, pos.y_ly, pos.z_ly)) {
+            rand.runRandomly(densityAt(pos)) {
                 out.add(System(pos2))
             }
         }
 
         return out
+    }
+
+    fun densityAt(position: GalacticPosition): Double {
+        return 0.1 * gradient.sample(position.x_ly, position.y_ly, position.z_ly)
     }
 
     private fun cubeFrom(position: GalacticPosition): List<GalacticPosition> {
