@@ -17,11 +17,11 @@ import net.minecraft.item.Items
 class BlockGalaxyMapRenderer(dispatcher: BlockEntityRenderDispatcher) :
     BlockEntityRenderer<BlockGalaxyMapEntity>(dispatcher) {
     private val startPosition = GalacticPosition(0.0, 0.0, 0.0)
-    var map = GALAXY_INSTANCE.getNearSystems(startPosition)
+    var map = GALAXY_INSTANCE.getNearSystems(startPosition, 16.0)
     var position = startPosition
         set(value) {
             field = value
-            map = GALAXY_INSTANCE.getNearSystems(position)
+            map = GALAXY_INSTANCE.getNearSystems(position, 16.0)
         }
     var scale = 1.0F
     var defaultScale = 0.1F
