@@ -2,6 +2,7 @@ package de.wulkanat.new_frontiers.world.dimension.model.skybox.opengl
 
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.glfw.GLFWErrorCallback
+import org.lwjgl.opengl.GL11
 import org.lwjgl.system.MemoryStack.stackPush
 import org.lwjgl.system.MemoryUtil.NULL
 
