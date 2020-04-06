@@ -3,7 +3,7 @@ package de.wulkanat.new_frontiers.world.dimension
 import de.wulkanat.new_frontiers.MOD_ID
 import de.wulkanat.new_frontiers.extensions.kotlin.random.nextBoolean
 import de.wulkanat.new_frontiers.extensions.kotlin.random.normalDistributedInt
-import de.wulkanat.new_frontiers.world.biome.procedural.BiomeProceduralPlains
+import de.wulkanat.new_frontiers.world.biome.galaxy.atmospheric.organic.BiomeProceduralPlains
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.util.Identifier
@@ -49,7 +49,8 @@ class DimensionBertiBotts(world: World, type: DimensionType, val seed: Int) : Dy
     override fun createChunkGenerator(): ChunkGenerator<*> {
         val generatorConfig = OverworldChunkGeneratorConfig()
         val biome = Registry.register(Registry.BIOME, Identifier(MOD_ID, "plains__${this.dimType.suffix}"),
-            BiomeProceduralPlains(random))
+            BiomeProceduralPlains(random)
+        )
 
         val biomeConfig: FixedBiomeSourceConfig =
             BiomeSourceType.FIXED.getConfig(world.levelProperties).setBiome(biome)

@@ -1,6 +1,7 @@
 package de.wulkanat.new_frontiers
 
 import de.wulkanat.new_frontiers.block.BlockGalaxyMap
+import de.wulkanat.new_frontiers.block.BlockTest
 import de.wulkanat.new_frontiers.block.entity.BlockGalaxyMapEntity
 import de.wulkanat.new_frontiers.block.entity.BlockGalaxyMapRenderer
 import de.wulkanat.new_frontiers.block.entity.BlockTransporter
@@ -16,6 +17,7 @@ fun init() {
         CommandTPRaw.register(it)
         CommandTravel.register(it)
     }
+    BlockTest.register()
     BlockTransporter.register()
     BlockGalaxyMap.register()
     BlockGalaxyMapEntity.register()

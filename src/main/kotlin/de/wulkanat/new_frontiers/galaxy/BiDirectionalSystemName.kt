@@ -1,4 +1,4 @@
-package de.wulkanat.new_frontiers.world.dimension.model
+package de.wulkanat.new_frontiers.galaxy
 
 import kotlin.math.roundToInt
 import kotlin.random.Random
@@ -10,7 +10,11 @@ class BiDirectionalNameSystem(val diameter: Double, val height: Double) {
         val systemFormat = "AA-G Ms"
         val quadrantFormat = "A-G NN"
 
-        val totalNames = getTotalCombinations(systemFormat) * getTotalCombinations(quadrantFormat)
+        val totalNames = getTotalCombinations(
+            systemFormat
+        ) * getTotalCombinations(
+            quadrantFormat
+        )
         println(totalNames)
         val totalPoints = diameter * diameter * height
         println(totalPoints)
@@ -64,7 +68,11 @@ class BiDirectionalNameSystem(val diameter: Double, val height: Double) {
         val z = (zAlphabet.toDouble() / alphabet.size.toDouble()) * height +
                 (zGreek.toDouble() / greekAlphabet.size.toDouble()) * (height / alphabet.size.toDouble())
 
-        return GalacticPosition(x - diameter / 2.0, y - diameter / 2.0, z - height / 2.0)
+        return GalacticPosition(
+            x - diameter / 2.0,
+            y - diameter / 2.0,
+            z - height / 2.0
+        )
     }
 
     /*fun encodeSystemName(galacticPosition: GalacticPosition): String {

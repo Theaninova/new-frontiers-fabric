@@ -1,8 +1,8 @@
-package de.wulkanat.new_frontiers.world.dimension.model
+package de.wulkanat.new_frontiers.galaxy
 
 import de.wulkanat.new_frontiers.animation.Interpolator
 import de.wulkanat.new_frontiers.extensions.kotlin.random.runRandomly
-import de.wulkanat.new_frontiers.world.dimension.model.noise.RadialGradient
+import de.wulkanat.new_frontiers.galaxy.noise.RadialGradient
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -15,7 +15,11 @@ class Galaxy(seed: Int) {
 
         for (pos in cubeFrom(position, distance)) {
             val rand = Random(pos.hashCode())
-            val pos2 = GalacticPosition(pos.x_ly + rand.nextDouble(), pos.y_ly + rand.nextDouble(), pos.z_ly + rand.nextDouble())
+            val pos2 = GalacticPosition(
+                pos.x_ly + rand.nextDouble(),
+                pos.y_ly + rand.nextDouble(),
+                pos.z_ly + rand.nextDouble()
+            )
 
             rand.runRandomly(densityAt(pos)) {
                 out.add(System(pos2))
@@ -32,9 +36,9 @@ class Galaxy(seed: Int) {
     private fun cubeFrom(position: GalacticPosition, size: Double): List<GalacticPosition> {
         return List((size*size*size).roundToInt()) {
             GalacticPosition(
-                it / (size * size)  + position.x_ly - size / 2,
-                (it / size) % size  + position.y_ly - size / 2,
-                it % size         + position.z_ly -  size / 2
+                it / (size * size) + position.x_ly - size / 2,
+                (it / size) % size + position.y_ly - size / 2,
+                it % size + position.z_ly - size / 2
             )
         }
     }

@@ -1,4 +1,4 @@
-package de.wulkanat.new_frontiers.world.dimension.model.skybox.opengl
+package de.wulkanat.new_frontiers.galaxy.skybox.opengl
 
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.opengl.GL

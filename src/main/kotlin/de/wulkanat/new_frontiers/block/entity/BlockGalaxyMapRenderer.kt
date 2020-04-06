@@ -1,7 +1,7 @@
 package de.wulkanat.new_frontiers.block.entity
 
 import de.wulkanat.new_frontiers.GALAXY_INSTANCE
-import de.wulkanat.new_frontiers.world.dimension.model.GalacticPosition
+import de.wulkanat.new_frontiers.galaxy.GalacticPosition
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.OverlayTexture

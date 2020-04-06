@@ -1,7 +1,7 @@
 package de.wulkanat.new_frontiers
 
-import de.wulkanat.new_frontiers.world.dimension.model.GalacticPosition
-import de.wulkanat.new_frontiers.world.dimension.model.Galaxy
+import de.wulkanat.new_frontiers.galaxy.GalacticPosition
+import de.wulkanat.new_frontiers.galaxy.Galaxy
 import kotlin.system.measureTimeMillis
 
 // for testing purposes

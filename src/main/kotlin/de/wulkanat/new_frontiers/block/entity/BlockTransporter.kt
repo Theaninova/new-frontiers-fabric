@@ -16,6 +16,6 @@ object BlockTransporter {
     fun register() {
         Registry.register(Registry.BLOCK, Identifier(MOD_ID, "transporter"), TRANSPORTER)
         Registry.register(Registry.ITEM, Identifier(MOD_ID, "transporter"), BlockItem(TRANSPORTER, Item.Settings().group(
-            ItemGroupNewFrontiersCore.NEW_FRONTIERS_CORE)))
+            ItemGroupNewFrontiersCore.INSTANCE)))
     }
 }

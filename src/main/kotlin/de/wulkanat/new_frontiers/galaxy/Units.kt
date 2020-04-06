@@ -1,4 +1,4 @@
-package de.wulkanat.new_frontiers.world.dimension.model
+package de.wulkanat.new_frontiers.galaxy
 
 fun lyToLs(ly: Int): Int {
     return ly / 31_557_600

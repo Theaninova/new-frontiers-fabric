@@ -1,4 +1,4 @@
-package de.wulkanat.new_frontiers.world.dimension.model.skybox;
+package de.wulkanat.new_frontiers.galaxy.skybox;
 
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.VertexFormats;

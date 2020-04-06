@@ -1,4 +1,4 @@
-package de.wulkanat.new_frontiers.world.dimension.model
+package de.wulkanat.new_frontiers.galaxy
 
 import de.wulkanat.new_frontiers.extensions.kotlin.random.normalDistributedInt
 import kotlin.random.Random

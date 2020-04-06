@@ -1,7 +1,6 @@
-package de.wulkanat.new_frontiers.world.dimension.model.noise
+package de.wulkanat.new_frontiers.galaxy.noise
 
 import de.wulkanat.new_frontiers.extensions.kotlin.math.normalize
-import de.wulkanat.new_frontiers.extensions.kotlin.math.tempNormalized
 import kotlin.math.pow
 import kotlin.math.sqrt
 
